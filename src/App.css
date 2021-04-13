@@ -41,6 +41,11 @@
   margin-top: 15px;
 }
 
+.ml-5 {
+  margin-left: 5px;
+}
+
 .f-right {
   float: right;
+  cursor: pointer;
 }
