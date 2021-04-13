@@ -22,30 +22,6 @@ class App extends Component{
 		}
 	}
 
-	onGenerateData = () => {
-		var tasks = [
-			{
-				id: this.randomId(),
-				name: 'Learn',
-				status: true
-			},
-			{
-				id: this.randomId(),
-				name: 'Code',
-				status: true
-			},
-			{
-				id: this.randomId(),
-				name: 'Sleep',
-				status: false
-			}
-		]
-		this.setState({
-			tasks: tasks
-		})
-		localStorage.setItem('tasks', JSON.stringify(tasks));
-	}
-
 	randomId() {
 		return Math.floor((1 + Math.random()) * 0x10000).toString(16)
 	}
@@ -62,9 +38,77 @@ class App extends Component{
 		})
 	}
 
+	onShowForm = () => {
+		this.setState({
+			isDisplayForm: true	
+		})
+	}
+
+	onSubmit = (data) => {
+		var { tasks } = this.state;
+		if (data.id === "") {
+			data.id = this.randomId();
+			tasks.push(data);
+		} else {
+			var index = this.findIndex(data.id);
+			tasks[index] = data;
+		}
+		this.setState({
+			tasks: tasks,
+			taskEditing: null,
+		})
+		localStorage.setItem('tasks', JSON.stringify(tasks))
+	}
+
+	onUpdateStatus = (id) => {
+		var { tasks } = this.state;
+		var index = this.findIndex(id);
+		if (index !== -1) {
+			tasks[index].status = !tasks[index].status
+			this.setState({
+				tasks: tasks
+			})
+			localStorage.setItem('tasks', JSON.stringify(tasks))
+		}
+	}
+
+	onDelete = (id) => {
+		var { tasks } = this.state;
+		var index = this.findIndex(id);
+		if (index !== -1) {
+			tasks.slice(index, 1);
+			this.setState({
+				tasks: tasks
+			})
+			localStorage.setItem('tasks', JSON.stringify(tasks))
+		}
+		this.onCloseForm();
+	}
+
+	onUpdate = (id) => {
+		var { tasks } = this.state;
+		var index = this.findIndex(id);
+		var taskEditing = tasks[index];
+		this.setState({
+			taskEditing: taskEditing
+		})
+		this.onShowForm();
+	}
+
+	findIndex = (id) => {
+		var { tasks } = this.state;
+		var result = -1;
+		tasks.forEach((task, index) => {
+			if(task.id === id) {
+				result = index;
+			}
+		})
+		return result;
+	}
+
 	render() {
-		var { tasks, isDisplayForm } = this.state;
-		var elmTaskForm = isDisplayForm ? <TaskForm onCloseForm={this.onCloseForm} /> : '';
+		var { tasks, isDisplayForm, taskEditing } = this.state;
+		var elmTaskForm = isDisplayForm ? <TaskForm onSubmit={this.onSubmit} onCloseForm={this.onCloseForm} task={taskEditing} /> : '';
 		return (
 			<div className="container">
 				<div className="text-center">
@@ -77,11 +121,8 @@ class App extends Component{
 						<button type="button" className="btn btn-primary" onClick={this.onToggleForm}>
 							<span className="fa fa-plus mr-5"></span> Thêm Công Việc
 						</button>
-						<button type="button" className="btn btn-success ml-5" onClick={ this.onGenerateData }>
-							<span className="fa fa-plus mr-5"></span> Generate Data
-						</button>
 						<Control />
-						<TaskList tasks={ tasks }/>
+						<TaskList tasks={ tasks } onUpdate={this.onUpdate} onUpdateStatus={this.onUpdateStatus} onDelete={this.onDelete}/>
 					</div>
 				</div>
 			</div>
