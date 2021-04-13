@@ -27,6 +27,12 @@ class TaskForm extends Component{
                 name: nextProps.task.name,
                 status: nextProps.task.status,
             })
+        } else if(!nextProps.task) {
+            this.setState({
+                id: '',
+                name: '',
+                status: false,
+            })
         }
     }
 
@@ -81,8 +87,8 @@ class TaskForm extends Component{
                             </div>
                             <label>Trạng Thái :</label>
                             <select className="form-control" name="status" value={this.state.status} onChange={this.handleChange}>
-                                <option value={true}>Kích Hoạt</option>
-                                <option value={false}>Ẩn</option>
+                                <option value={true}>Done</option>
+                                <option value={false}>Hidden</option>
                             </select>
                             <br/>
                             <div className="text-center">

@@ -10,6 +10,11 @@ class App extends Component{
 		this.state = { 
 			tasks: [],
 			isDisplayForm: false,
+			filter: {
+				name: '',
+				status: -1,
+			},
+			keyword: '',
 		}
 	}
 
@@ -26,10 +31,29 @@ class App extends Component{
 		return Math.floor((1 + Math.random()) * 0x10000).toString(16)
 	}
 
-	onToggleForm = () => {
+	onFilter = (filterName, filterStatus) => {
+		console.log(filterName, filterStatus)
+		filterStatus = parseInt(filterStatus, 10)
 		this.setState({
-			isDisplayForm: !this.isDisplayForm	
+			filter: {
+				name: filterName.toLowerCase(),
+				status: filterStatus,
+			}
 		})
+	}
+
+	onToggleForm = () => {
+		if(this.state.isDisplayForm && this.state.taskEditing !== null) {
+			this.setState({
+				isDisplayForm: true,
+				taskEditing: null,
+			})
+		} else {
+			this.setState({
+				isDisplayForm: !this.isDisplayForm,
+				taskEditing: null,
+			})
+		}
 	}
 
 	onCloseForm = () => {
@@ -106,8 +130,26 @@ class App extends Component{
 		return result;
 	}
 
+	onSearch = (keyword) => {
+		console.log(keyword)
+	}
+
 	render() {
-		var { tasks, isDisplayForm, taskEditing } = this.state;
+		var { tasks, isDisplayForm, taskEditing, filter } = this.state;
+		if(filter) {
+			if (filter.name) {
+				tasks = tasks.filter((task) => {
+					return task.name.toLowerCase().indexOf(filter.name) !== -1;
+				})
+			}
+			tasks = tasks.filter((task) => {
+				if(filter.status === -1) {
+					return task;
+				} else {
+					return task.status === (filter.status === 1 ? true : false)
+				}
+			})
+		}
 		var elmTaskForm = isDisplayForm ? <TaskForm onSubmit={this.onSubmit} onCloseForm={this.onCloseForm} task={taskEditing} /> : '';
 		return (
 			<div className="container">
@@ -121,8 +163,8 @@ class App extends Component{
 						<button type="button" className="btn btn-primary" onClick={this.onToggleForm}>
 							<span className="fa fa-plus mr-5"></span> Thêm Công Việc
 						</button>
-						<Control />
-						<TaskList tasks={ tasks } onUpdate={this.onUpdate} onUpdateStatus={this.onUpdateStatus} onDelete={this.onDelete}/>
+						<Control onSearch={this.onSearch}/>
+						<TaskList tasks={ tasks } onFilter={this.onFilter} onUpdate={this.onUpdate} onUpdateStatus={this.onUpdateStatus} onDelete={this.onDelete}/>
 					</div>
 				</div>
 			</div>
