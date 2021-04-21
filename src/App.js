@@ -3,13 +3,14 @@ import './App.css'
 import TaskForm from './components/TaskForm'
 import TaskControl from './components/TaskControl'
 import TaskList from './components/TaskList'
+import { connect } from 'react-redux'
+import * as actions from './actions/index'
 
 class App extends Component {
   constructor(props) {
     super(props)
     this.state = {
       tasks: [],
-      isDisplayForm: false,
       filter: {
         name: '',
         status: -1,
@@ -42,23 +43,7 @@ class App extends Component {
   }
 
   onToggleForm = () => {
-    if (this.state.isDisplayForm && this.state.taskEditing !== null) {
-      this.setState({
-        isDisplayForm: true,
-        taskEditing: null,
-      })
-    } else {
-      this.setState({
-        isDisplayForm: !this.isDisplayForm,
-        taskEditing: null,
-      })
-    }
-  }
-
-  onCloseForm = () => {
-    this.setState({
-      isDisplayForm: false,
-    })
+    this.props.onToggleForm()
   }
 
   onShowForm = () => {
@@ -143,7 +128,9 @@ class App extends Component {
   }
 
   render() {
-    var { tasks, isDisplayForm, taskEditing, filter, keyword, sortBy, sortValue } = this.state
+    var { tasks, taskEditing, filter, keyword, sortBy, sortValue } = this.state
+    var { isDisplayForm } = this.props
+
     if (filter) {
       if (filter.name) {
         tasks = tasks.filter((task) => {
@@ -176,11 +163,7 @@ class App extends Component {
         else return 0
       })
     }
-    var elmTaskForm = isDisplayForm ? (
-      <TaskForm onSubmit={this.onSubmit} onCloseForm={this.onCloseForm} task={taskEditing} />
-    ) : (
-      ''
-    )
+    var elmTaskForm = isDisplayForm ? <TaskForm onSubmit={this.onSubmit} task={taskEditing} /> : ''
     return (
       <div className="container">
         <div className="text-center">
@@ -218,4 +201,18 @@ class App extends Component {
   }
 }
 
-export default App
+const mapStateToProps = (state) => {
+  return {
+    isDisplayForm: state.isDisplayForm,
+  }
+}
+
+const mapDispatchToProps = (dispatch, props) => {
+  return {
+    onToggleForm: () => {
+      dispatch(actions.toggleForm())
+    },
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(App)
