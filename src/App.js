@@ -68,17 +68,17 @@ class App extends Component {
     localStorage.setItem('tasks', JSON.stringify(tasks))
   }
 
-  onUpdateStatus = (id) => {
-    var { tasks } = this.state
-    var index = this.findIndex(id)
-    if (index !== -1) {
-      tasks[index].status = !tasks[index].status
-      this.setState({
-        tasks: tasks,
-      })
-      localStorage.setItem('tasks', JSON.stringify(tasks))
-    }
-  }
+  // onUpdateStatus = (id) => {
+  //   var { tasks } = this.state
+  //   var index = this.findIndex(id)
+  //   if (index !== -1) {
+  //     tasks[index].status = !tasks[index].status
+  //     this.setState({
+  //       tasks: tasks,
+  //     })
+  //     localStorage.setItem('tasks', JSON.stringify(tasks))
+  //   }
+  // }
 
   onDelete = (id) => {
     var { tasks } = this.state
@@ -101,17 +101,6 @@ class App extends Component {
       taskEditing: taskEditing,
     })
     this.onShowForm()
-  }
-
-  findIndex = (id) => {
-    var { tasks } = this.state
-    var result = -1
-    tasks.forEach((task, index) => {
-      if (task.id === id) {
-        result = index
-      }
-    })
-    return result
   }
 
   onSearch = (keyword) => {
@@ -188,12 +177,7 @@ class App extends Component {
               onSearch={this.onSearch}
               onSort={this.onSort}
             />
-            <TaskList
-              onFilter={this.onFilter}
-              onUpdate={this.onUpdate}
-              onUpdateStatus={this.onUpdateStatus}
-              onDelete={this.onDelete}
-            />
+            <TaskList onFilter={this.onFilter} onUpdate={this.onUpdate} onDelete={this.onDelete} />
           </div>
         </div>
       </div>
