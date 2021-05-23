@@ -12,28 +12,26 @@ class TaskForm extends Component {
   }
 
   componentWillMount() {
-    if (this.props.task) {
+    if (this.props.itemEditing && this.props.itemEditing.id !== null) {
       this.setState({
-        id: this.props.task.id,
-        name: this.props.task.name,
-        status: this.props.task.status,
+        id: this.props.itemEditing.id,
+        name: this.props.itemEditing.name,
+        status: this.props.itemEditing.status,
       })
+    } else {
+      this.onClear()
     }
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps && nextProps.task) {
+    if (nextProps && nextProps.itemEditing) {
       this.setState({
-        id: nextProps.task.id,
-        name: nextProps.task.name,
-        status: nextProps.task.status,
+        id: nextProps.itemEditing.id,
+        name: nextProps.itemEditing.name,
+        status: nextProps.itemEditing.status,
       })
-    } else if (!nextProps.task) {
-      this.setState({
-        id: '',
-        name: '',
-        status: false,
-      })
+    } else {
+      this.onClear()
     }
   }
 
@@ -42,18 +40,20 @@ class TaskForm extends Component {
     var name = target.name
     var value = target.value
 
+    if (name === 'status') {
+      value = target.value === 'true' ? true : false
+    }
+
     this.setState({
       [name]: value,
     })
-    // console.log(this.state)
   }
 
-  handleSubmit = (event) => {
+  onSubmit = (event) => {
     event.preventDefault()
-    // this.props.onSubmit(this.state)
-    this.props.onAddTask(this.state)
+    this.props.onSaveTask(this.state)
     this.onClear()
-    this.onCloseForm()
+    this.onExitForm()
   }
 
   onExitForm = () => {
@@ -68,18 +68,18 @@ class TaskForm extends Component {
   }
 
   render() {
-    var { id } = this.state
+    if (!this.props.isDisplayForm) return ''
     return (
       <div className="col-xs-4 col-sm-4 col-md-4 col-lg-4">
         <div className="panel panel-warning">
           <div className="panel-heading">
             <h3 className="panel-title">
-              {id !== '' ? 'Cập nhật công việc' : 'Thêm Công Việc'}
+              {this.state.id !== '' ? 'Cập nhật công việc' : 'Thêm Công Việc'}
               <span className="fa fa-times-circle f-right" onClick={this.onExitForm}></span>
             </h3>
           </div>
           <div className="panel-body">
-            <form onSubmit={this.handleSubmit}>
+            <form onSubmit={this.onSubmit}>
               <div className="form-group">
                 <label>Tên :</label>
                 <input
@@ -119,13 +119,13 @@ class TaskForm extends Component {
 }
 
 const mapStateToProps = (state) => {
-  return {}
+  return { isDisplayForm: state.isDisplayForm, itemEditing: state.itemEditing }
 }
 
 const mapDispatchToProps = (dispatch, props) => {
   return {
-    onAddTask: (task) => {
-      dispatch(actions.addTask(task))
+    onSaveTask: (task) => {
+      dispatch(actions.saveTask(task))
     },
     onCloseForm: () => {
       dispatch(actions.closeForm())
