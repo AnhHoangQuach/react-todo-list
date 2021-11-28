@@ -23,6 +23,7 @@ class TaskList extends Component {
       name: name === 'filterName' ? value : this.state.filterName,
       status: name === 'filterStatus' ? value : this.state.filterStatus,
     }
+    this.props.onFilterTable(filter)
     this.setState({
       [name]: value,
     })
