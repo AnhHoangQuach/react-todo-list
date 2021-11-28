@@ -18,6 +18,7 @@ class App extends Component {
       this.props.onClearTask({
         id: '',
         name: '',
+        image: '',
         status: false,
       })
     } else {
@@ -43,7 +44,7 @@ class App extends Component {
             }
           >
             <button type="button" className="btn btn-primary" onClick={this.onToggleForm}>
-              <span className="fa fa-plus mr-5"></span> Thêm Công Việc
+              <span className="fa fa-plus mr-5"></span> Thêm Sản Phẩm
             </button>
             <TaskControl />
             <TaskList />

@@ -11,6 +11,10 @@ class TaskList extends Component {
     }
   }
 
+  componentDidMount() {
+    console.log('tesst')
+  }
+
   onChange = (event) => {
     var target = event.target
     var name = target.name
@@ -73,6 +77,7 @@ class TaskList extends Component {
               <tr>
                 <th className="text-center">STT</th>
                 <th className="text-center">Tên</th>
+                <th className="text-center">Hình ảnh</th>
                 <th className="text-center">Trạng Thái</th>
                 <th className="text-center">Hành Động</th>
               </tr>
@@ -89,6 +94,7 @@ class TaskList extends Component {
                     onChange={this.onChange}
                   />
                 </td>
+                <td></td>
                 <td>
                   <select
                     className="form-control"

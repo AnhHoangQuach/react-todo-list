@@ -25,6 +25,7 @@ var myReducer = (state = initialState, action) => {
       var task = {
         id: action.task.id,
         name: action.task.name,
+        image: action.task.image,
         status: action.task.status === 'true' || action.task.status === true ? true : false,
       }
       if (!task.id) {
@@ -52,9 +53,9 @@ var myReducer = (state = initialState, action) => {
       return [...state]
     case types.DELETE_TASK:
       index = findIndex(state, action.id)
-      console.log(index)
       state.splice(index, 1)
       localStorage.setItem('tasks', JSON.stringify(state))
+      return [...state]
     default:
       return state
   }

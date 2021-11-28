@@ -7,6 +7,7 @@ class TaskForm extends Component {
     this.state = {
       id: '',
       name: '',
+      image: '',
       status: false,
     }
   }
@@ -65,6 +66,7 @@ class TaskForm extends Component {
       name: '',
       status: false,
     })
+    this.props.onCloseForm()
   }
 
   render() {
@@ -74,7 +76,7 @@ class TaskForm extends Component {
         <div className="panel panel-warning">
           <div className="panel-heading">
             <h3 className="panel-title">
-              {this.state.id !== '' ? 'Cập nhật công việc' : 'Thêm Công Việc'}
+              {this.state.id !== '' ? 'Cập nhật Sản Phẩm' : 'Thêm Sản Phẩm'}
               <span className="fa fa-times-circle f-right" onClick={this.onExitForm}></span>
             </h3>
           </div>
@@ -87,6 +89,16 @@ class TaskForm extends Component {
                   className="form-control"
                   name="name"
                   value={this.state.name}
+                  onChange={this.handleChange}
+                />
+              </div>
+              <div className="form-group">
+                <label>Hình ảnh :</label>
+                <input
+                  type="text"
+                  className="form-control"
+                  name="image"
+                  value={this.state.image}
                   onChange={this.handleChange}
                 />
               </div>
@@ -103,7 +115,7 @@ class TaskForm extends Component {
               <br />
               <div className="text-center">
                 <button type="submit" className="btn btn-warning">
-                  Thêm
+                  {this.state.id !== '' ? 'Cập nhật' : 'Thêm'}
                 </button>
                 &nbsp;
                 <button type="button" className="btn btn-danger" onClick={this.onClear}>
