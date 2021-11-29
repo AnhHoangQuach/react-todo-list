@@ -25,6 +25,7 @@ class TaskItem extends Component {
         <td>
           <img src={task.image} alt="img" />
         </td>
+        <td>{task.quantity}</td>
         <td className="text-center">
           <span
             className={task.status === true ? 'label label-success' : 'label label-danger'}

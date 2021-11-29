@@ -26,6 +26,7 @@ var myReducer = (state = initialState, action) => {
         id: action.task.id,
         name: action.task.name,
         image: action.task.image,
+        quantity: action.task.quantity,
         status: action.task.status === 'true' || action.task.status === true ? true : false,
       }
       if (!task.id) {

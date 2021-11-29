@@ -79,6 +79,7 @@ class TaskList extends Component {
                 <th className="text-center">STT</th>
                 <th className="text-center">Tên</th>
                 <th className="text-center">Hình ảnh</th>
+                <th className="text-center">Số lượng</th>
                 <th className="text-center">Trạng Thái</th>
                 <th className="text-center">Hành Động</th>
               </tr>
@@ -95,6 +96,7 @@ class TaskList extends Component {
                     onChange={this.onChange}
                   />
                 </td>
+                <td></td>
                 <td></td>
                 <td>
                   <select

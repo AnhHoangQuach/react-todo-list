@@ -8,6 +8,7 @@ class TaskForm extends Component {
       id: '',
       name: '',
       image: '',
+      quantity: 0,
       status: false,
     }
   }
@@ -99,6 +100,16 @@ class TaskForm extends Component {
                   className="form-control"
                   name="image"
                   value={this.state.image}
+                  onChange={this.handleChange}
+                />
+              </div>
+              <div className="form-group">
+                <label>Số lượng :</label>
+                <input
+                  type="number"
+                  className="form-control"
+                  name="quantity"
+                  value={this.state.quantity}
                   onChange={this.handleChange}
                 />
               </div>
